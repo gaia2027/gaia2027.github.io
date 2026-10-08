@@ -1,5 +1,7 @@
 # 投稿确认邮件：学校接入说明
 
+> 历史方案，已由 Gmail SMTP 方案替代。当前部署步骤以 [supabase/README.md](../supabase/README.md#submission-confirmation-email) 为准；下文 Resend、学校接管和占位域名要求不再用于当前部署。
+
 ## 当前状态
 
 注册、登录、个人信息和投稿仍使用 Supabase。SAVE 保存文字及选择的新文件；SUBMIT 保存投稿并标记 submitted。

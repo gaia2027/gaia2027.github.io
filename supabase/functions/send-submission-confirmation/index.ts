@@ -1,3 +1,5 @@
+import nodemailer from 'npm:nodemailer@10.0.15'
+
 const allowedOrigin = Deno.env.get('GAIA_SITE_ORIGIN') ?? 'https://gaia2027.github.io'
 
 const corsHeaders = {
@@ -6,25 +8,25 @@ const corsHeaders = {
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
 }
 
-const json = (body, status = 200) => new Response(JSON.stringify(body), {
+const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), {
   status,
   headers: { ...corsHeaders, 'Content-Type': 'application/json' },
 })
 
-const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (character) => ({
+const escapeHtml = (value: string) => String(value).replace(/[&<>"']/g, (character) => ({
   '&': '&amp;',
   '<': '&lt;',
   '>': '&gt;',
   '"': '&quot;',
   "'": '&#039;',
-})[character])
+})[character]!)
 
 const getPublishableKey = () => {
   const legacyKey = Deno.env.get('SUPABASE_ANON_KEY')
   if (legacyKey) return legacyKey
 
   try {
-    const keys = JSON.parse(Deno.env.get('SUPABASE_PUBLISHABLE_KEYS') ?? '{}')
+    const keys: Record<string, string> = JSON.parse(Deno.env.get('SUPABASE_PUBLISHABLE_KEYS') ?? '{}')
     return keys.default ?? Object.values(keys)[0]
   } catch {
     return undefined
@@ -77,30 +79,78 @@ Deno.serve(async (request) => {
   }
 
   const recipientName = [profile?.first_name, profile?.last_name].filter(Boolean).join(' ') || 'participant'
-  const resendApiKey = Deno.env.get('RESEND_API_KEY')
-  const sender = Deno.env.get('GAIA_EMAIL_FROM')
-  if (!resendApiKey || !sender) return json({ error: 'Confirmation email is not configured.' }, 503)
+  const smtpUser = Deno.env.get('SMTP_USER')
+  const smtpPassword = Deno.env.get('SMTP_PASSWORD')?.replace(/\s/g, '')
+  const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')
+  if (!smtpUser || !smtpPassword || !serviceKey) return json({ error: 'Confirmation email is not configured.' }, 503)
 
   const text = `Dear ${recipientName},\n\nYour submission has been uploaded for the conference ‘Geomechanics Alliance in Asia’\n\nThe reference of your submission is:\n${submission.paper_title}, ${recipientName}\n\nBest Regards,\nGAIA Committee`
   const html = `<p>Dear ${escapeHtml(recipientName)},</p><p>Your submission has been uploaded for the conference ‘Geomechanics Alliance in Asia’</p><p>The reference of your submission is:<br>${escapeHtml(submission.paper_title)}, ${escapeHtml(recipientName)}</p><p>Best Regards,<br>GAIA Committee</p>`
   const idempotencyKey = `gaia-${user.id}-${submission.submitted_at}`.replace(/[^a-zA-Z0-9_-]/g, '-')
 
-  const emailResponse = await fetch('https://api.resend.com/emails', {
+  // Gmail has no idempotency API: claim this submission before sending.
+  // Only the server role can access receipt records.
+  const receiptUrl = new URL(`${supabaseUrl}/rest/v1/submission_email_receipts`)
+  receiptUrl.searchParams.set('user_id', `eq.${user.id}`)
+  receiptUrl.searchParams.set('submitted_at', `eq.${submission.submitted_at}`)
+  const receiptHeaders = {
+    Authorization: `Bearer ${serviceKey}`,
+    apikey: serviceKey,
+    'Content-Type': 'application/json',
+  }
+  const claim = await fetch(`${supabaseUrl}/rest/v1/submission_email_receipts`, {
     method: 'POST',
-    headers: {
-      Authorization: `Bearer ${resendApiKey}`,
-      'Content-Type': 'application/json',
-      'Idempotency-Key': idempotencyKey,
-    },
-    body: JSON.stringify({
-      from: sender,
-      to: [user.email],
+    headers: receiptHeaders,
+    body: JSON.stringify({ user_id: user.id, submitted_at: submission.submitted_at }),
+  })
+  if (claim.status === 409) {
+    const existing = await fetch(receiptUrl, { headers: receiptHeaders })
+    if (!existing.ok) return json({ error: 'Email status could not be loaded.' }, 503)
+    const [receipt] = await existing.json()
+    return receipt?.status === 'sent'
+      ? json({ sent: true, alreadySent: true })
+      : json({ error: 'Email delivery is pending confirmation. Please contact the organizer before retrying.' }, 409)
+  }
+  if (!claim.ok) return json({ error: 'Email tracking is not configured.' }, 503)
+
+  const transport = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    auth: { user: smtpUser, pass: smtpPassword },
+    connectionTimeout: 15000,
+    greetingTimeout: 15000,
+    socketTimeout: 30000,
+    disableFileAccess: true,
+    disableUrlAccess: true,
+  })
+  try {
+    const result = await transport.sendMail({
+      from: { name: 'GAIA 2027 — No Reply', address: smtpUser },
+      to: user.email,
       subject: 'GAIA 2027 — Submission confirmation',
+      messageId: `<${idempotencyKey}@gmail.com>`,
       text,
       html,
-    }),
-  })
+    })
+    if (!result.accepted?.length) throw Object.assign(new Error('Recipient rejected'), { code: 'EENVELOPE' })
+  } catch (error) {
+    // Release definite rejections; leave ambiguous timeouts pending to avoid duplicates.
+    const failure = error as { code?: string; responseCode?: number }
+    if (['EAUTH', 'EENVELOPE', 'ECONNECTION', 'EDNS'].includes(failure.code ?? '') || (failure.responseCode ?? 0) >= 400) {
+      await fetch(receiptUrl, { method: 'DELETE', headers: receiptHeaders }).catch(() => null)
+    }
+    console.error('Submission email failed', { code: failure.code, responseCode: failure.responseCode })
+    return json({ error: 'Confirmation email could not be sent. Your submission is saved.' }, 502)
+  } finally {
+    transport.close()
+  }
 
-  if (!emailResponse.ok) return json({ error: 'Confirmation email could not be sent.' }, 502)
+  const recorded = await fetch(receiptUrl, {
+    method: 'PATCH',
+    headers: receiptHeaders,
+    body: JSON.stringify({ status: 'sent', sent_at: new Date().toISOString() }),
+  }).catch(() => null)
+  if (!recorded?.ok) console.error('SMTP accepted email, but receipt status could not be saved.')
   return json({ sent: true })
 })

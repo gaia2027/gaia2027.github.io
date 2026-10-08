@@ -207,9 +207,9 @@ export function SubmissionEditor({ participantName = '' }: { participantName?: s
       if (status === 'submitted' && import.meta.env.VITE_SUBMISSION_CONFIRMATION_EMAIL_ENABLED === 'true') {
         try {
           const { error: emailError } = await supabase.functions.invoke('send-submission-confirmation')
-          if (emailError) emailWarning = 'Your submission was saved, but the confirmation email could not be sent. Please try Submit again later.'
+          if (emailError) emailWarning = 'Your submission was saved, but email delivery could not be confirmed. Please check your inbox or contact the organizer.'
         } catch {
-          emailWarning = 'Your submission was saved, but the confirmation email could not be sent. Please try Submit again later.'
+          emailWarning = 'Your submission was saved, but email delivery could not be confirmed. Please check your inbox or contact the organizer.'
         }
       }
       setNotice(status === 'submitted'
