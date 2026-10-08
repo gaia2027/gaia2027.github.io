@@ -1,4 +1,4 @@
-const allowedOrigin = Deno.env.get('GAIA_SITE_ORIGIN') ?? 'https://zhuzhiren92-dot.github.io'
+const allowedOrigin = Deno.env.get('GAIA_SITE_ORIGIN') ?? 'https://gaia2027.github.io'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': allowedOrigin,

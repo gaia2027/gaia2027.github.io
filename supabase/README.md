@@ -4,8 +4,8 @@
 2. Open **SQL Editor**, paste and run `migrations/202609020001_initial_user_submission_system.sql`.
    - If the initial script was run before the Data API grants were added, also run `migrations/202609020002_grant_data_api_access.sql`.
 3. In **Authentication > URL Configuration**, set:
-   - Site URL: `https://zhuzhiren92-dot.github.io/gaia-2027-conference/`
-   - Redirect URL: `https://zhuzhiren92-dot.github.io/gaia-2027-conference/account`
+   - Site URL: `https://gaia2027.github.io/`
+   - Redirect URL: `https://gaia2027.github.io/account`
    - Local redirect URLs: `http://localhost:5173/account`, `http://127.0.0.1:5173/account`, and `http://127.0.0.1:4173/account`
 4. Copy the Project URL and publishable/anon key into `.env.local` for local development.
 5. Add the same values as GitHub repository secrets named `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`.
