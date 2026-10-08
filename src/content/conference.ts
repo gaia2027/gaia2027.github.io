@@ -132,7 +132,6 @@ export const conference: ConferenceContent = {
   ],
   homeOrganizingCommittee: [
     'Chairman: Prof. Jeff Wang (ACE, City University of Hong Kong)',
-    'Vice-Chairman: Dr. Kostas Senetakis (ACE, City University of Hong Kong)',
     'Vice-Chairman: Dr. Fiona Kwok (ACE, City University of Hong Kong)',
     'Secretary: Dr. Zhiren Zhu (ACE, City University of Hong Kong)',
   ],
@@ -456,14 +455,6 @@ export const conference: ConferenceContent = {
       photo: 'assets/contact/wang-jianfeng.webp',
       biography:
         'An internationally recognized scholar in micro-macro mechanics of granular materials, X-ray CT characterization, DEM simulation and data-driven analysis of geomaterials.',
-    },
-    {
-      role: 'Vice-chairman',
-      name: 'Dr. Kostas Senetakis',
-      profileUrl: 'https://scholars.cityu.edu.hk/en/persons/ksenetak/',
-      photo: 'assets/contact/senetakis-kostas.webp',
-      biography:
-        'His research spans experimental soil mechanics and dynamics, micromechanics, tribology, geosynthetics and recycled aggregates in geotechnical engineering.',
     },
     {
       role: 'Vice-chairman',
