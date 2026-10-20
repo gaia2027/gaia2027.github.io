@@ -19,7 +19,6 @@ const assetUrl = (path: string) => `${import.meta.env.BASE_URL}${path}`
 
 export function PageFrame({
   children,
-  pageName,
   showIntroSections = true,
   showSchoolCarousel = true,
 }: PageFrameProps) {
@@ -49,12 +48,12 @@ export function PageFrame({
 
         {children}
       </main>
-      <Footer showTc103={pageName === 'HOME'} />
+      <Footer />
     </>
   )
 }
 
-function Footer({ showTc103 }: { showTc103: boolean }) {
+function Footer() {
   return (
     <footer className="site-footer">
       <div className="page-width footer-main">
@@ -95,8 +94,8 @@ function Footer({ showTc103 }: { showTc103: boolean }) {
           </div>
           <div className="footer-logo-group footer-supported-group">
             <p className="section-kicker">SUPPORTED BY</p>
-            <div className="footer-logo-row" style={showTc103 ? { gridTemplateColumns: 'repeat(2, minmax(0, 1fr))' } : undefined}>
-              {[...(showTc103 ? [{ name: 'TC103', logo: 'assets/contact/tc103.png' }] : []), { name: 'TC105 Geo-Mechanics from Micro to Macro', logo: 'assets/contact/tc105.png' }, ...conference.financialSponsors].map((item) => (
+            <div className="footer-logo-row" style={{ gridTemplateColumns: 'repeat(2, minmax(0, 1fr))' }}>
+              {[{ name: 'TC103', logo: 'assets/contact/tc103.png' }, { name: 'TC105 Geo-Mechanics from Micro to Macro', logo: 'assets/contact/tc105.png' }, ...conference.financialSponsors].map((item) => (
                 <img
                   key={item.name}
                   src={assetUrl(item.logo)}
