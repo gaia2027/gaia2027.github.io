@@ -11,12 +11,21 @@ export function WorkshopPage() {
       pageStatement="Focused talks, serious questions and time to think together."
     >
       <section className="workshop-overview page-width" data-reveal>
-        <h2>GAIA Third Workshop (GAIA 2027)</h2>
+        <h2>The 3rd GAIA Workshop (GAIA 2027)</h2>
         <div className="workshop-overview-copy">
           {conference.workshop.overview.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}
         </div>
+      </section>
+
+      <section className="speakers-section page-width">
+        <div className="section-heading-row">
+          <div>
+            <h2>Invited Speakers</h2>
+          </div>
+        </div>
+        <KeynoteCarousel speakers={conference.workshop.invitedSpeakers} invited />
       </section>
 
       <section className="speakers-section page-width">
@@ -80,9 +89,6 @@ export function WorkshopPage() {
         </Link>
       </section>
 
-      <section className="tentative-timetable page-width" data-reveal>
-        <h2>Tentative Timetable</h2>
-      </section>
     </PageFrame>
   )
 }

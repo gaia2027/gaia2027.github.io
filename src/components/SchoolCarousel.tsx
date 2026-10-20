@@ -45,7 +45,7 @@ export function SchoolCarousel({ wide = false }: { wide?: boolean }) {
     if (paused || reducedMotion) return
     const timer = window.setInterval(
       () => setIndex((current) => (current + 1) % slides.length),
-      2800,
+      2300,
     )
     return () => window.clearInterval(timer)
   }, [paused, reducedMotion, slides.length])
@@ -86,9 +86,10 @@ export function SchoolCarousel({ wide = false }: { wide?: boolean }) {
     <section
       className={`school-showcase${wide ? ' school-showcase-home' : ''}`}
       aria-labelledby="school-showcase-title"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocusCapture={() => setPaused(true)}
+      onPointerDownCapture={() => setPaused(false)}
+      onFocusCapture={(event) => {
+        if (event.target.matches(':focus-visible')) setPaused(true)
+      }}
       onBlurCapture={(event) => {
         if (!event.currentTarget.contains(event.relatedTarget)) setPaused(false)
       }}

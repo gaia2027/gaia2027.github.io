@@ -126,6 +126,7 @@ export type ConferenceContent = {
     overview: string[]
     topics: string[]
     speakers: Speaker[]
+    invitedSpeakers: Speaker[]
     venue: Highlight[]
     dates: WorkshopDate[]
     framework: Highlight[]

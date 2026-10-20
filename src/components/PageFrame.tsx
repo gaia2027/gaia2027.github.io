@@ -19,6 +19,7 @@ const assetUrl = (path: string) => `${import.meta.env.BASE_URL}${path}`
 
 export function PageFrame({
   children,
+  pageName,
   showIntroSections = true,
   showSchoolCarousel = true,
 }: PageFrameProps) {
@@ -41,19 +42,19 @@ export function PageFrame({
               text={`${identity.shortName} ${identity.year}`}
             />
             <p className="conference-full-name">
-              {identity.edition} Geomechanics Alliance In Asia
+              The {identity.edition} Geomechanics Alliance in Asia
             </p>
           </section>
         ) : null}
 
         {children}
       </main>
-      <Footer />
+      <Footer showTc103={pageName === 'HOME'} />
     </>
   )
 }
 
-function Footer() {
+function Footer({ showTc103 }: { showTc103: boolean }) {
   return (
     <footer className="site-footer">
       <div className="page-width footer-main">
@@ -94,8 +95,8 @@ function Footer() {
           </div>
           <div className="footer-logo-group footer-supported-group">
             <p className="section-kicker">SUPPORTED BY</p>
-            <div className="footer-logo-row">
-              {[{ name: 'TC105 Geo-Mechanics from Micro to Macro', logo: 'assets/contact/tc105.png' }, ...conference.financialSponsors].map((item) => (
+            <div className="footer-logo-row" style={showTc103 ? { gridTemplateColumns: 'repeat(2, minmax(0, 1fr))' } : undefined}>
+              {[...(showTc103 ? [{ name: 'TC103', logo: 'assets/contact/tc103.png' }] : []), { name: 'TC105 Geo-Mechanics from Micro to Macro', logo: 'assets/contact/tc105.png' }, ...conference.financialSponsors].map((item) => (
                 <img
                   key={item.name}
                   src={assetUrl(item.logo)}

@@ -125,7 +125,7 @@ export const conference: ConferenceContent = {
     {
       kicker: 'PREVIOUS WORKSHOP',
       title: 'GAIA 2027',
-      body: 'GAIA Third Workshop (GAIA 2027) is scheduled from 15 to 16 May 2027 in Hong Kong, China.',
+      body: 'The 3rd GAIA Workshop is scheduled from 14 to 16 May 2027 in Hong Kong, China.',
       linkLabel: 'More about the workshop',
       linkTo: '/workshop',
     },
@@ -185,7 +185,7 @@ export const conference: ConferenceContent = {
   workshop: {
     overview: [
       'Geomechanics Alliance in Asia (GAIA) aims to provide a platform for young researchers and graduate students in geomechanics and geotechnical engineering across Asia to exchange ideas and foster collaboration. The annual GAIA Workshop serves as the main channel for communication and interaction.',
-      'The third workshop, GAIA 2027, will be hosted by City University of Hong Kong and is scheduled to take place from 15 to 16 May 2027 in Hong Kong, China. The main theme is Advances in Micro–Macro Geomechanics, covering key topics in geotechnical engineering such as particle-scale effects, micro–macro constitutive relationships, multiphase and multi-physics coupling, multiscale experimental and monitoring techniques, and multiscale numerical modeling methods.',
+      'The 3rd GAIA Workshop, GAIA 2027, will be hosted by City University of Hong Kong and is scheduled to take place from 14 to 16 May 2027 in Hong Kong, China. The main theme is Advances in Micro–Macro Geomechanics, covering key topics in geotechnical engineering such as particle-scale behavior and mechanisms, micro–macro constitutive relationships, multi-scale, multi-phase and multi-physics coupling and numerical modelling methods, and experimental and monitoring techniques.',
       'To ensure high-quality discussions and interactions, the workshop will be limited to approximately 150 participants.',
     ],
     topics: [
@@ -198,6 +198,11 @@ export const conference: ConferenceContent = {
     ],
     speakers: Array.from({ length: 6 }, (_, index) => ({
       name: `Keynote speaker ${String(index + 1).padStart(2, '0')}`,
+      affiliation: 'To be announced',
+      topic: 'Profile, portrait and lecture title will be added after confirmation.',
+    })),
+    invitedSpeakers: Array.from({ length: 6 }, (_, index) => ({
+      name: `Invited speaker ${String(index + 1).padStart(2, '0')}`,
       affiliation: 'To be announced',
       topic: 'Profile, portrait and lecture title will be added after confirmation.',
     })),
@@ -257,14 +262,14 @@ export const conference: ConferenceContent = {
         detail: '',
       },
       {
-        label: 'Presentation Time per Person',
-        value: '20 min',
-        detail: 'including discussion',
+        label: 'Presentation Time',
+        value: '30 min (including Q&A) for each keynote speaker; 20 min (including Q&A) for each invited speaker.',
+        detail: '',
       },
     ],
     posterSessions: [
-      'Please refer to the workshop schedule for the detailed conference timetable. Participants are required to prepare an electronic file of their academic poster in a 1:2 aspect ratio, clearly presenting the research topic, main content, and key conclusions.',
-      'The organizer will arrange centralized poster printing, and the electronic poster file should be sent to the conference email address by 15 April 2027. Before the poster session begins, on-site staff will contact participants and guide them to the designated location.',
+      'Please refer to the workshop schedule for the detailed conference timetable. Participants are required to prepare an electronic file of their academic poster in a 1:2 aspect ratio, clearly presenting the research topic, main content, and key findings.',
+      "The presenters need to print their posters by themselves according to the 'Poster Instructions'. The electronic poster file should be sent to the conference email address by 15 April 2027. Before the poster session begins, on-site staff will contact participants and guide them to the designated location.",
       "If poster submissions exceed the venue's capacity, the organizing committee may screen submitted materials based on academic innovation and thematic relevance. Participants affected by this process will be informed by email.",
       'We look forward to your wonderful presentations.',
     ],
@@ -347,7 +352,7 @@ export const conference: ConferenceContent = {
       },
     ],
     feeNote:
-      'The registration fee covers the following items: conference accessories; relevant facilities and materials for oral presentations and poster sessions; lunches, dinners, and the gala dinner during the conference dates; participation certificates and award certificates; expenses related to the construction site visit.',
+      'The registration fee covers the following items: Conference manual and programme; lunches, dinners, and coffee-break snacks and drinks during the conference dates; participation certificates and award certificates; conference accessories; and relevant facilities and materials for oral presentations and poster sessions.',
   },
   program: [
     {
