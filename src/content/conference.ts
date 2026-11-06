@@ -150,7 +150,7 @@ export const conference: ConferenceContent = {
     {
       label: 'Financial Sponsored',
       name: 'Department of Architecture and Civil Engineering in City University of Hong Kong (ACE, CityU HK)',
-      logo: 'assets/contact/ace-logo.png',
+      logo: 'assets/contact/ace-logo-eng.jpg',
     },
   ],
   submissionTopics: [
