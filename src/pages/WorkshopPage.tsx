@@ -22,19 +22,19 @@ export function WorkshopPage() {
       <section className="speakers-section page-width">
         <div className="section-heading-row">
           <div>
-            <h2>Invited Speakers</h2>
+            <h2>Keynote Speakers</h2>
           </div>
         </div>
-        <KeynoteCarousel speakers={conference.workshop.invitedSpeakers} invited />
+        <KeynoteCarousel speakers={conference.workshop.speakers} />
       </section>
 
       <section className="speakers-section page-width">
         <div className="section-heading-row">
           <div>
-            <h2>Keynote Speakers</h2>
+            <h2>Invited Speakers</h2>
           </div>
         </div>
-        <KeynoteCarousel speakers={conference.workshop.speakers} />
+        <KeynoteCarousel speakers={conference.workshop.invitedSpeakers} invited />
       </section>
 
       <TimelinePanel
