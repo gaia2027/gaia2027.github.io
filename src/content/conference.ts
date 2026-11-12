@@ -8,7 +8,7 @@ export const conference: ConferenceContent = {
     fullName: 'International Workshop of Geomechanics Alliance In Asia',
     theme: 'Advances in Micro–Macro Geomechanics',
     location: 'Hong Kong, China',
-    dates: 'May 2027',
+    dates: '14-16 May 2027',
   },
   navigation: [
     { label: 'HOME', path: '/' },

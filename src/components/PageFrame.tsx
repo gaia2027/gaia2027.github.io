@@ -41,7 +41,7 @@ export function PageFrame({
               text={`${identity.shortName} ${identity.year}`}
             />
             <p className="conference-full-name">
-              The {identity.edition} Geomechanics Alliance in Asia
+              The 3<sup>rd</sup> Geomechanics Alliance in Asia
             </p>
           </section>
         ) : null}
