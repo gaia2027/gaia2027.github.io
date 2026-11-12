@@ -95,7 +95,7 @@ function Footer() {
           <div className="footer-logo-group footer-supported-group">
             <p className="section-kicker">SUPPORTED BY</p>
             <div className="footer-logo-row" style={{ gridTemplateColumns: 'repeat(2, minmax(0, 1fr))' }}>
-              {[{ name: 'TC103', logo: 'assets/contact/tc103.png' }, { name: 'TC105 Geo-Mechanics from Micro to Macro', logo: 'assets/contact/tc105.png' }, ...conference.financialSponsors].map((item) => (
+              {[{ name: 'TC105 Geo-Mechanics from Micro to Macro', logo: 'assets/contact/tc105.png' }, { name: 'TC103', logo: 'assets/contact/tc103-logo.png' }, ...conference.financialSponsors].map((item) => (
                 <img
                   key={item.name}
                   src={assetUrl(item.logo)}

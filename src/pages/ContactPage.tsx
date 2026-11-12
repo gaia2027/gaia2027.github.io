@@ -44,7 +44,7 @@ export function ContactPage() {
           <div className="logo-group logo-group-supported">
             <p className="section-kicker">SUPPORTED BY</p>
             <div className="supported-logo-row">
-              {[{ name: 'TC105 Geo-Mechanics from Micro to Macro', logo: 'assets/contact/tc105.png' }, ...conference.financialSponsors].map((organization) => (
+              {[{ name: 'TC105 Geo-Mechanics from Micro to Macro', logo: 'assets/contact/tc105.png' }, { name: 'TC103', logo: 'assets/contact/tc103-logo.png' }, ...conference.financialSponsors].map((organization) => (
                 <div className="contact-logo-frame" key={organization.name}>
                   <img
                     src={assetUrl(organization.logo)}
