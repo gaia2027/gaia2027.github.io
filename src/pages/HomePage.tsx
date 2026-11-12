@@ -47,7 +47,17 @@ export function HomePage() {
         <ul className="about-bullet-list">
           {conference.homeOrganizingCommittee.map((member) => (
             <li key={member}>
-              <p>{member}</p>
+              <p>
+                {member}
+                {member.startsWith('Chairman:') && (
+                  <>
+                    <br />
+                    <a className="about-history-link" href="https://scholars.cityu.edu.hk/en/persons/jefwang/" target="_blank" rel="noreferrer">
+                      https://scholars.cityu.edu.hk/en/persons/jefwang/
+                    </a>
+                  </>
+                )}
+              </p>
             </li>
           ))}
         </ul>
